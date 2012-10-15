@@ -12,12 +12,15 @@ class JenkinsJobManager {
     String jenkinsUser
     String jenkinsPassword
     
+    String zeuthUrl
+    
     Boolean dryRun = false
     Boolean noViews = false
     Boolean noDelete = false
 
     JenkinsApi jenkinsApi
     GitApi gitApi
+    ZeuthApi zeuthApi
 
     JenkinsJobManager(Map props) {
         for (property in props) {
@@ -25,6 +28,7 @@ class JenkinsJobManager {
         }
         initJenkinsApi()
         initGitApi()
+        initZeuthApi()
     }
 
     void syncWithRepo() {
@@ -61,6 +65,7 @@ class JenkinsJobManager {
         for(ConcreteJob missingJob in missingJobs) {
             println "Creating missing job: ${missingJob.jobName} from ${missingJob.templateJob.jobName}"
             jenkinsApi.cloneJobForBranch(missingJob, templateJobs)
+            zeuthApi.create(missingJob.branchName, missingJob.jobName)
         }
 
     }
@@ -70,6 +75,7 @@ class JenkinsJobManager {
         println "Deleting deprecated jobs:\n\t${deprecatedJobNames.join('\n\t')}"
         deprecatedJobNames.each { String jobName ->
             jenkinsApi.deleteJob(jobName)
+            zeuthApi.delete(jobName.split('-')[2], jobName.split('-')[0])
         }
     }
 
@@ -151,6 +157,18 @@ class JenkinsJobManager {
         }
 
         return this.jenkinsApi
+    }
+    
+    ZeuthApi initZeuthApi() {
+        if(!zeuthApi) {
+            assert zeuthApi != null
+            if(dryRun) {
+                println "DRY RUN! Not executing any POST commands to Zeuth"
+                this.zeuthApi = new ZeuthApiReadOnly(zeuthUrl: zeuthUrl)
+            } else {
+                this.zeuthApi = new ZeuthApi(zeuthUrl: zeuthUrl)
+            }
+        }
     }
 
     GitApi initGitApi() {
