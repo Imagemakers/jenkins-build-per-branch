@@ -169,6 +169,7 @@ class JenkinsJobManager {
                 this.zeuthApi = new ZeuthApi(zeuthUrl: "http://zeuth/")
             }
         }
+        return this.zeuthApi
     }
 
     GitApi initGitApi() {
