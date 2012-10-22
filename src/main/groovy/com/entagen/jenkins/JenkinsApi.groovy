@@ -247,3 +247,50 @@ class JenkinsApi {
 '''
 
 }
+
+public class ZeuthApi {
+    String zeuthUrl;
+    
+    void create(String branch, String job) {
+        println "creating zeuth $branch $jobName"
+        post('/api/iis/create', [branch: branch, site: job ] )
+    }
+    void delete(String branch, String job) {
+        println "deleting zeuth $branch $jobName"
+        post('/api/iis/remove', [branch: branch, site: job ] )
+    }
+        
+    protected Integer post(String path, params = [:], ContentType contentType = ContentType.URLENC) {
+
+        HTTPBuilder http = new HTTPBuilder(zeuthUrl)
+
+        if (requestInterceptor) {
+            http.client.addRequestInterceptor(this.requestInterceptor)
+        }
+
+        Integer status = HttpStatus.SC_EXPECTATION_FAILED
+
+        http.handler.failure = { resp ->
+            def msg = "Unexpected failure on $zeuthUrl$path: ${resp.statusLine} ${resp.status}"
+            status = resp.statusLine.statusCode
+            throw new Exception(msg)
+        }
+
+        http.post(path: path, body: postBody, query: params,
+                requestContentType: contentType) { resp ->
+            assert resp.statusLine.statusCode < 400
+            status = resp.statusLine.statusCode
+        }
+        return status
+    }
+}
+
+class ZeuthApiReadOnly extends ZeuthApi {
+       
+    @Override
+    protected Integer post(String path, params = [:], ContentType contentType = ContentType.URLENC) {
+        println "READ ONLY! skipping POST to $path with params: ${params}, postBody:\n$postBody"
+        // we never want to post anything with a ReadOnly API, just return OK for all requests to it
+        return HttpStatus.SC_OK
+    }
+}
