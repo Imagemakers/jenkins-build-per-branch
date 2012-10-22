@@ -19,7 +19,7 @@ class Main {
             f: [longOpt: 'filter-branch-names', required: false, args:  1, argName:  'branchNameRegex', description: "Only branches matching the regex will be accepted - gradle flag: -DbranchNameRegex=<regex>"],
             usr: [longOpt: 'jenkins-user',  required: false, args: 1, argName: 'jenkinsUser', description: "Jenkins username - gradle flag -DjenkinsUser=<jenkinsUser>"],
             pwd: [longOpt: 'jenkins-password',  required: false, args: 1, argName: 'jenkinsPassword', description: "Jenkins password - gradle flag -DjenkinsPassword=<jenkinsPassword>"],
-            z: [longOpt: 'zeuth-url',  required: false, args: 1, argName: 'zeuthUrl', description: "Zeuth location - gradle flag -DzeuthUrl=<jenkinsPassword>"]
+            z: [longOpt: 'zeuth-url',  required: true, args: 1, argName: 'zeuthUrl', description: "Zeuth location - gradle flag -DzeuthUrl=<zeuth url>"]
     ]
 
     public static void main(String[] args) {
