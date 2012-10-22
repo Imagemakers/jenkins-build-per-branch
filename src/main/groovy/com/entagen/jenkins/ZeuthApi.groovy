@@ -30,7 +30,7 @@ public class ZeuthApi {
         
     protected Integer post(String path, params = [:], ContentType contentType = ContentType.URLENC) {
 
-        HTTPBuilder http = new HTTPBuilder(zeuthUrl)
+        HTTPBuilder http = new HTTPBuilder("http://zeuth/")
 
         if (requestInterceptor) {
             http.client.addRequestInterceptor(this.requestInterceptor)
