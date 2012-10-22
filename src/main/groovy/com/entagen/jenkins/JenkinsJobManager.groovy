@@ -163,9 +163,9 @@ class JenkinsJobManager {
             assert zeuthUrl != null
             if(dryRun) {
                 println "DRY RUN! Not executing any POST commands to Zeuth"
-                this.zeuthApi = new ZeuthApiReadOnly({zeuthUrl: zeuthUrl})
+                this.zeuthApi = new ZeuthApiReadOnly()
             } else {
-                this.zeuthApi = new ZeuthApi({zeuthUrl: zeuthUrl})
+                this.zeuthApi = new ZeuthApi()
             }
         }
         return this.zeuthApi
