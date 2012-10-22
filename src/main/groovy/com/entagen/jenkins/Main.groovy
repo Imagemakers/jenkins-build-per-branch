@@ -86,7 +86,6 @@ class Main {
         Map <String, String> mergedArgs = [:]
         opts.each { String shortOpt, Map<String, String> optMap ->
             if (optMap.argName) {
-                println System.getProperty(optMap.argName)
                 mergedArgs[optMap.argName] = commandLineOptions."$shortOpt" ?: System.getProperty(optMap.argName)
             }
         }
