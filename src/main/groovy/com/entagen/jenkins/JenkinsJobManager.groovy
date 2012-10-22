@@ -11,7 +11,6 @@ class JenkinsJobManager {
     String branchNameRegex
     String jenkinsUser
     String jenkinsPassword
-    
     String zeuthUrl
     
     Boolean dryRun = false
@@ -161,12 +160,12 @@ class JenkinsJobManager {
     
     ZeuthApi initZeuthApi() {
         if(!zeuthApi) {
-            assert zeuthApi != null
+            assert zeuthUrl != null
             if(dryRun) {
                 println "DRY RUN! Not executing any POST commands to Zeuth"
-                this.zeuthApi = new ZeuthApiReadOnly(zeuthUrl: "http://zeuth/")
+                this.zeuthApi = new ZeuthApiReadOnly({zeuthUrl: zeuthUrl})
             } else {
-                this.zeuthApi = new ZeuthApi(zeuthUrl: "http://zeuth/")
+                this.zeuthApi = new ZeuthApi({zeuthUrl: zeuthUrl})
             }
         }
         return this.zeuthApi
