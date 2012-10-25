@@ -21,11 +21,11 @@ public class ZeuthApi {
     
     void create(String branch, String job) {
         println "creating zeuth $branch $job"
-        post('/api/iis/create', [branch: branch, site: job] )
+        post('api/iis/create', [branch: branch, site: job] )
     }
     void delete(String branch, String job) {
         println "deleting zeuth $branch $job"
-        post('/api/iis/remove', [branch: branch, site: job] )
+        post('api/iis/remove', [branch: branch, site: job] )
     }
         
     protected Integer post(String path, params = [:], ContentType contentType = ContentType.URLENC) {
