@@ -40,7 +40,7 @@ public class ZeuthApi {
             throw new Exception(msg)
         }
 
-        http.post(path: path, body: postBody, query: params,
+        http.post(path: path, query: params,
                 requestContentType: contentType) { resp ->
             assert resp.statusLine.statusCode < 400
             status = resp.statusLine.statusCode
