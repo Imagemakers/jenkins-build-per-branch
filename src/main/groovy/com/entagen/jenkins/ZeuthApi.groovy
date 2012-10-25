@@ -31,11 +31,7 @@ public class ZeuthApi {
     protected Integer post(String path, params = [:], ContentType contentType = ContentType.URLENC) {
 
         HTTPBuilder http = new HTTPBuilder(zeuthUrl)
-
-        if (requestInterceptor) {
-            http.client.addRequestInterceptor(this.requestInterceptor)
-        }
-
+        
         Integer status = HttpStatus.SC_EXPECTATION_FAILED
 
         http.handler.failure = { resp ->
