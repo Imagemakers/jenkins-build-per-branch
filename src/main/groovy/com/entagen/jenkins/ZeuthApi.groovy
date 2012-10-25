@@ -35,17 +35,20 @@ public class ZeuthApi {
         Integer status = HttpStatus.SC_EXPECTATION_FAILED
 
         http.handler.failure = { resp ->
-            def msg = "Unexpected failure on $zeuthUrl$path: ${resp.statusLine} ${resp.status}"
+            def msg = "Unexpected failure on $path: ${resp.statusLine} ${resp.status}"
             status = resp.statusLine.statusCode
             throw new Exception(msg)
         }
-
-        http.post(path: path, query: params,
-                requestContentType: contentType) { resp ->
-            assert resp.statusLine.statusCode < 400
-            status = resp.statusLine.statusCode
+        
+        http.request(POST) {
+            uri.path = path
+            body = params
+            requestContentType = URLENC
+            response.success = { resp, InputStreamReader reader ->
+                assert resp.statusLine.statusCode == 200
+            }
         }
-        return status
+        return 200
     }
 }
 
