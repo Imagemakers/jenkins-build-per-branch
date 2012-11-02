@@ -35,7 +35,7 @@ public class ZeuthApi {
     protected Integer post(String path, params = [:], ContentType contentType = ContentType.URLENC) {
 
         def http = new HTTPBuilder(zeuthUrl )
-        http.post( path, body: postBody,
+        http.post( path, body: params,
                     requestContentType: URLENC ) { resp ->
            assert resp.statusLine.statusCode == 200
          }
