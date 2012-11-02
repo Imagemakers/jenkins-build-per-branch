@@ -34,7 +34,7 @@ public class ZeuthApi {
         def conn = url.openConnection() 
         conn.setRequestMethod("POST") 
 
-        String data = "branch=" + params.get('branch') + "&job=" + params.get('site')
+        String data = "branch=" + params.get('branch') + "&site=" + params.get('site')
 
         conn.doOutput = true 
 
