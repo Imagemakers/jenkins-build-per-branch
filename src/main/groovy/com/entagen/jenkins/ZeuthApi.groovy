@@ -30,24 +30,21 @@ public class ZeuthApi {
         
     protected Integer post(String path, params = [:], ContentType contentType = ContentType.URLENC) {
 
-        HTTPBuilder http = new HTTPBuilder("http://zeuth.lan.im.com/")
-        
-        Integer status = HttpStatus.SC_EXPECTATION_FAILED
+        def url = new URL ("http://zeuth.lan.im.com/" + path) 
+        def conn = url.openConnection() 
+        conn.setRequestMethod("POST") 
 
-        http.handler.failure = { resp ->
-            def msg = "Unexpected failure on $path: ${resp.statusLine} ${resp.status}"
-            status = resp.statusLine.statusCode
-            throw new Exception(msg)
-        }
+        String data = "branch=" + params.get('branch') + "job=" + params.get('job')
+
+        conn.doOutput = true 
+
+        Writer wr = new OutputStreamWriter(conn.outputStream) 
+        wr.write(data) 
+        wr.flush() 
+        wr.close() 
+
+        conn.connect() 
         
-        http.request(POST) {
-            uri.path = path
-            body = params
-            requestContentType = URLENC
-            response.success = { resp, InputStreamReader reader ->
-                assert resp.statusLine.statusCode == 200
-            }
-        }
         return 200
     }
 }
