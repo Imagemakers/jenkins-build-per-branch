@@ -49,6 +49,8 @@ public class ZeuthApi {
 
         conn.connect()
         
+        println conn.content.text 
+        
         return 200
     }
 }
