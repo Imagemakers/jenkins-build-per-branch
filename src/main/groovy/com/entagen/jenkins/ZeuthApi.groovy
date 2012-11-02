@@ -19,6 +19,10 @@ import org.apache.http.HttpRequest
 public class ZeuthApi {
     String zeuthUrl;
     
+    public void setZeuthUrl(String zeuthUrl) {
+        this.zeuthUrl = zeuthUrl
+    }
+    
     void create(String branch, String job) {
         println "creating zeuth $branch $job"
         post('api/iis/create', [branch: branch, site: job] )
@@ -30,7 +34,7 @@ public class ZeuthApi {
         
     protected Integer post(String path, params = [:], ContentType contentType = ContentType.URLENC) {
 
-        def url = new URL ("http://zeuth.lan.im.com/" + path) 
+        def url = new URL (zeuthUrl + "/" + path) 
         def conn = url.openConnection() 
         conn.setRequestMethod("POST") 
 

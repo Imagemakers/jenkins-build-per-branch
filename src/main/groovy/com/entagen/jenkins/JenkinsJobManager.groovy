@@ -167,6 +167,8 @@ class JenkinsJobManager {
             } else {
                 this.zeuthApi = new ZeuthApi()
             }
+            
+            this.zeuthApi.setZeuthUrl(this.zeuthUrl)
         }
         return this.zeuthApi
     }
