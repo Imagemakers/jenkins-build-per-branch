@@ -34,22 +34,12 @@ public class ZeuthApi {
         
     protected Integer post(String path, params = [:], ContentType contentType = ContentType.URLENC) {
 
-        def url = new URL (zeuthUrl + "/" + path) 
-        def conn = url.openConnection() 
-        conn.setRequestMethod("POST") 
+        def http = new HTTPBuilder(zeuthUrl )
+        http.post( path, body: postBody,
+                    requestContentType: URLENC ) { resp ->
+           assert resp.statusLine.statusCode == 200
+         }
 
-        String data = "branch=" + params.get('branch') + "&site=" + params.get('site')
-
-        conn.doOutput = true 
-
-        Writer wr = new OutputStreamWriter(conn.outputStream) 
-        wr.write(data) 
-        wr.flush() 
-        wr.close() 
-
-        conn.connect()
-        
-        return 200
     }
 }
 
