@@ -33,17 +33,16 @@ public class ZeuthApi {
     }
         
     protected Integer post(String path, params = [:], ContentType contentType = ContentType.URLENC) {
-
-        def http = new HTTPBuilder(zeuthUrl )
-        http.request( POST ) {
-            uri.path = path
-            body =  params
-            requestContentType = contentType
-
-            response.success = { resp ->
-              assert resp.statusLine.statusCode == 200
-            }
-          }
+        Integer status = HttpStatus.SC_EXPECTATION_FAILED
+        
+        HTTPBuilder http = new HTTPBuilder(jenkinsServerUrl)
+        http.post(path: path, body: params,
+                requestContentType: contentType) { resp ->
+            assert resp.statusLine.statusCode < 400
+            status = resp.statusLine.statusCode
+        }
+        
+        return status
 
     }
 }
