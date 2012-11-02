@@ -43,9 +43,7 @@ public class ZeuthApi {
         wr.flush() 
         wr.close() 
 
-        conn.connect() 
-        
-        println conn.content.text 
+        conn.connect()
         
         return 200
     }
