@@ -16,6 +16,7 @@ class JenkinsJobManager {
     Boolean dryRun = false
     Boolean noViews = false
     Boolean noDelete = false
+    Boolean startOnCreate = false
 
     JenkinsApi jenkinsApi
     GitApi gitApi
@@ -65,6 +66,11 @@ class JenkinsJobManager {
             println "Creating missing job: ${missingJob.jobName} from ${missingJob.templateJob.jobName}"
             jenkinsApi.cloneJobForBranch(missingJob, templateJobs)
             zeuthApi.create(missingJob.branchName, missingJob.jobName)
+			
+            if (startOnCreate) {
+                jenkinsApi.startJob(missingJob)
+            }
+
         }
 
     }
@@ -95,7 +101,7 @@ class JenkinsJobManager {
     }
 
     List<TemplateJob> findRequiredTemplateJobs(List<String> allJobNames) {
-        String regex = /^($templateJobPrefix-.*)-($templateBranchName)$/
+        String regex = /^($templateJobPrefix-[^-]*)-($templateBranchName)$/
 
         List<TemplateJob> templateJobs = allJobNames.findResults { String jobName ->
             TemplateJob templateJob = null
